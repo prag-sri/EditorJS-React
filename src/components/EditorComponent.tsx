@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import List from '@editorjs/list';
+import ImageTool from '@editorjs/image';
 import { Button, Grid, Typography, CircularProgress, Box } from '@mui/material';
 
 interface EditorProps {
@@ -22,7 +23,15 @@ const EditorComponent: React.FC<EditorProps> = ({ onSave }) => {
           tools: {
             header: Header,
             list: List,
-            // Add other tools here as needed
+            image: {
+              class: ImageTool,
+              config: {
+                endpoints: {
+                  byFile: 'http://localhost:8008/uploadFile', // Endpoint for uploading by URL
+                },
+              },
+            },
+            // Add other tools as needed
           },
           onChange: () => {
             editor.save().then((outputData) => {
@@ -32,7 +41,7 @@ const EditorComponent: React.FC<EditorProps> = ({ onSave }) => {
             });
           },
         });
-
+    
         editorInstance.current = editor;
         setLoading(false);
         console.log('EditorJS initialized:', editorInstance.current);
